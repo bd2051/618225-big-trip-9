@@ -1,16 +1,16 @@
 import Renderer from "../renderer";
-import {filter} from "./templates/filter";
+import {menu} from "./templates/menu";
 
-export class Filter extends Renderer {
+export class Controls extends Renderer {
   constructor() {
     super({
       wrapper: `trip-controls`,
       options: {
-        after: `h2:last-of-type`,
+        after: `h2:first-of-type`,
       },
       renderList: [{
-        name: `filter`,
-        markup: filter,
+        name: `menu`,
+        markup: menu,
       }],
     });
   }
