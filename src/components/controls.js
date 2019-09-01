@@ -1,8 +1,8 @@
 import Renderer from "../renderer";
-import {menu} from "./templates/menu";
+import {getMenu} from "./templates/menu";
 
 export class Controls extends Renderer {
-  constructor() {
+  constructor(menuItems) {
     super({
       wrapper: `trip-controls`,
       options: {
@@ -10,7 +10,7 @@ export class Controls extends Renderer {
       },
       renderList: [{
         name: `menu`,
-        markup: menu,
+        markup: getMenu(menuItems),
       }],
     });
   }

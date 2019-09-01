@@ -28,10 +28,10 @@ export const getTravel = () => ({
     `Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus`
   ][Math.floor(Math.random() * 4)]),
   datetime: {
-    start: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
-    end: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
+    start: Date.now() + 1 + Math.floor(Math.random() * 7 * 24 * 60 * 60) * 1000,
+    end: Date.now() + 1 + Math.floor(Math.random() * 7 * 24 * 60 * 60) * 1000,
   },
-  price: Math.round(Math.random() * 10000),
+  price: Math.round(Math.random() * 1000),
   addition: [
     {
       name: `Add luggage`,
@@ -55,3 +55,15 @@ export const getTravel = () => ({
     },
   ].filter(() => Math.round(Math.random())).slice(0, 3),
 });
+
+export const getMenuData = () => new Map([
+  [`Timeline`, {active: true}],
+  [`Table`, {}],
+  [`Stats`, {}],
+]);
+
+export const getFilterData = () => [
+  `everything`,
+  `future`,
+  `past`,
+];

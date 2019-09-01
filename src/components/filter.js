@@ -1,8 +1,8 @@
 import Renderer from "../renderer";
-import {filter} from "./templates/filter";
+import {getFilter} from "./templates/filter";
 
 export class Filter extends Renderer {
-  constructor() {
+  constructor(filters) {
     super({
       wrapper: `trip-controls`,
       options: {
@@ -10,7 +10,7 @@ export class Filter extends Renderer {
       },
       renderList: [{
         name: `filter`,
-        markup: filter,
+        markup: getFilter(filters),
       }],
     });
   }

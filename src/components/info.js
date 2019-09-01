@@ -1,8 +1,8 @@
 import Renderer from "../renderer";
-import {info} from "./templates/info";
+import {getInfo} from "./templates/info";
 
 export class Info extends Renderer {
-  constructor() {
+  constructor({cities, dates}) {
     super({
       wrapper: `trip-info`,
       options: {
@@ -10,7 +10,7 @@ export class Info extends Renderer {
       },
       renderList: [{
         name: `info`,
-        markup: info,
+        markup: getInfo(cities, dates),
       }],
     });
   }

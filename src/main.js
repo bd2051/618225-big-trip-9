@@ -3,15 +3,21 @@ import {Controls} from "./components/controls";
 import {Filter} from "./components/filter";
 import {CardContainer} from "./components/cardContainer";
 import {Cards} from "./components/cards";
-import {getTravel} from "./data";
+import {getFilterData, getMenuData, getTravel} from "./data";
 
-const travels = new Array(12).fill(``).map(getTravel)
+const travels = new Array(12).fill(``).map(getTravel).sort((a, b) => a.datetime.start - b.datetime.start);
 
 const rendererList = [
-  new Info(),
-  new Controls(),
-  new Filter(),
-  new CardContainer(),
+  new Info({
+    cities: travels.map((el) => el.city),
+    dates: {
+      start: travels[0].datetime.start,
+      end: travels[travels.length - 1].datetime.end,
+    }
+  }),
+  new Controls(getMenuData()),
+  new Filter(getFilterData()),
+  new CardContainer(travels[0].datetime.start),
   new Cards(travels),
 ];
 

@@ -49,11 +49,11 @@ const setDataDiff = (start, end) => {
       suffix: `D`
     },
     {
-      time: Math.floor(diff / TIME_CONVERT.hour),
+      time: Math.floor(diff / TIME_CONVERT.hour) - Math.floor(diff / TIME_CONVERT.day) * 24,
       suffix: `H`
     },
     {
-      time: Math.floor(diff / TIME_CONVERT.minute),
+      time: Math.floor(diff / TIME_CONVERT.minute) - Math.floor(diff / TIME_CONVERT.hour) * 60,
       suffix: `M`
     },
   ];
@@ -81,9 +81,9 @@ export const getCard = ({
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T10:30">${start.format(`HH : mm`)}</time>
+          <time class="event__start-time" datetime="${start.format(`YYYY-MM-DDTHH:mm`)}">${start.format(`HH : mm`)}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T11:00">${end.format(`HH : mm`)}</time>
+          <time class="event__end-time" datetime="${end.format(`YYYY-MM-DDTHH:mm`)}">${end.format(`HH : mm`)}</time>
         </p>
         <p class="event__duration">${setDataDiff(start, end)}</p>
       </div>
