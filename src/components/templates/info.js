@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export const getInfo = (cities, dates) => {
-  const way = cities.filter((el, i, arr) => el !== arr[i - 1])
+  const way = cities.filter((el, i, arr) => el !== arr[i - 1]);
   const start = moment(dates.start);
   const end = moment(dates.end);
   const startMonth = start.format(`MMM`);

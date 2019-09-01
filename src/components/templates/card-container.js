@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export const getCardContainer = (date) => {
-  const currentDate = moment(date)
+  const currentDate = moment(date);
   return `<ul class="trip-days">
     <li class="trip-days__item  day">
       <div class="day__info">
