@@ -1,8 +1,17 @@
-const getInfo = () =>
-  `<div class="trip-info__main">
-    <h1 class="trip-info__title">Amsterdam &mdash; ... &mdash; Amsterdam</h1>
+import Renderer from "../renderer";
+import {getInfo} from "./templates/info";
 
-    <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
-  </div>`;
-
-export const info = getInfo();
+export class Info extends Renderer {
+  constructor({cities, dates}) {
+    super({
+      wrapper: `trip-info`,
+      options: {
+        before: `.trip-info__cost`
+      },
+      renderList: [{
+        name: `info`,
+        markup: getInfo(cities, dates),
+      }],
+    });
+  }
+}
