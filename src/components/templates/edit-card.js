@@ -1,4 +1,4 @@
-const getEditCard = () =>
+export const getEditCard = () =>
   `<li class="trip-events__item">
     <form class="event  event--edit" action="#" method="post">
       <header class="event__header">
@@ -187,6 +187,4 @@ const getEditCard = () =>
         </section>
       </section>
     </form>
-  </li>`;
-
-export const editCard = getEditCard();
+  <li>`;
