@@ -20,6 +20,7 @@ const cardContainer = new CardContainer(travels[0].datetime.start);
 const cards = new Cards(travels);
 
 const rendererList = [
+  info,
   controls,
   filter,
   cardContainer,
@@ -34,7 +35,7 @@ Object.keys(cards.openingButtons).forEach((key) => {
   });
 });
 Object.keys(cards.closingButtons).forEach((key) => {
-  cards.closingButtons[key].addEventListener(`click`, (e) => {
+  cards.closingButtons[key].addEventListener(`click`, () => {
     cards.closeDetail(key);
   });
 });

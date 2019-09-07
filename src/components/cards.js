@@ -14,9 +14,9 @@ export class Cards extends Renderer {
     this._travels = travels;
     this.totalCostElement = document.querySelector(`.trip-info__cost-value`);
     this.totalCostElement.innerText = this.calculateTravelsCost();
-    this.detailCards = this._renderList.reduce((acc, key) => {
+    this.detailCards = this._renderList.reduce((acc, key, index) => {
       const detailCards = document.createElement(`div`);
-      detailCards.innerHTML = getEditCard();
+      detailCards.innerHTML = getEditCard(this._travels[index]);
       acc[key.name] = detailCards;
       return acc;
     }, {});
@@ -49,7 +49,7 @@ export class Cards extends Renderer {
   calculateTravelsCost() {
     return this._travels.reduce((acc, curr) => {
       acc += curr.price;
-      acc += curr.addition.reduce((additionAcc, additionCurr) => {
+      acc += Array.from(curr.addition.keys()).reduce((additionAcc, additionCurr) => {
         additionAcc += additionCurr.price;
         return additionAcc;
       }, 0);

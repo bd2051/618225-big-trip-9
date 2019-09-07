@@ -1,67 +1,6 @@
 import moment from "moment";
-
-const typesMap = {
-  'bus': {
-    setTitle: (city) => `Bus to ${city}`,
-  },
-  'check-in': {
-    setTitle: () => `Check into hotel`,
-  },
-  'drive': {
-    setTitle: (city) => `Drive to ${city}`
-  },
-  'flight': {
-    setTitle: (city) => `Flight to ${city}`
-  },
-  'restaurant': {
-    setTitle: () => `Restaurant`
-  },
-  'ship': {
-    setTitle: (city) => `Ship to ${city}`
-  },
-  'sightseeing': {
-    setTitle: (city) => `Sightseeing in ${city}`
-  },
-  'taxi': {
-    setTitle: (city) => `Taxi to ${city}`
-  },
-  'train': {
-    setTitle: (city) => `Train to ${city}`
-  },
-  'transport': {
-    setTitle: (city) => `Transport to ${city}`
-  },
-  'trip': {
-    setTitle: (city) => `Trip to ${city}`
-  },
-};
-
-const setDataDiff = (start, end) => {
-  const TIME_CONVERT = {
-    day: 1000 * 60 * 60 * 24,
-    hour: 1000 * 60 * 60,
-    minute: 1000 * 60,
-  };
-  const diff = end.diff(start);
-  const periods = [
-    {
-      time: Math.floor(diff / TIME_CONVERT.day),
-      suffix: `D`
-    },
-    {
-      time: Math.floor(diff / TIME_CONVERT.hour) - Math.floor(diff / TIME_CONVERT.day) * 24,
-      suffix: `H`
-    },
-    {
-      time: Math.floor(diff / TIME_CONVERT.minute) - Math.floor(diff / TIME_CONVERT.hour) * 60,
-      suffix: `M`
-    },
-  ];
-  return periods
-    .filter((el) => el.time > 0)
-    .map((el) => `${el.time}${el.suffix}`)
-    .join(` `);
-};
+import {TYPES_MAP} from "../../constants";
+import {setDataDiff} from "../../utils";
 
 export const getCard = ({
   type,
@@ -77,7 +16,7 @@ export const getCard = ({
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${typesMap[type].setTitle(city)}</h3>
+      <h3 class="event__title">${TYPES_MAP[type].setTitle(city)}</h3>
 
       <div class="event__schedule">
         <p class="event__time">
@@ -94,7 +33,7 @@ export const getCard = ({
 
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${addition.map((el) => `<li class="event__offer">
+        ${Array.from(addition.keys()).filter((el) => addition.get(el)).map((el) => `<li class="event__offer">
           <span class="event__offer-title">
             ${el.name}
           </span>&plus;&nbsp;&euro;&nbsp;<span class="event__offer-price">${el.price}</span>
