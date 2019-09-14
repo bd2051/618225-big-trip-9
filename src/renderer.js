@@ -1,3 +1,5 @@
+import {createElement} from "./utils";
+
 export default class Renderer {
   constructor({renderList, wrapper, options = {}}) {
     this.renderedElements = {};
@@ -22,17 +24,10 @@ export default class Renderer {
     });
   }
   _componentRendering(wrapperElement, elementOptions) {
-    const {markup, count = 1, classes = [], name} = elementOptions;
-    const tempCount = classes.length || count;
-    for (let i = 0; i < tempCount; i++) {
-      const element = document.createElement(`div`);
-      if (classes[i]) {
-        element.classList.add(classes[i]);
-      }
-      element.innerHTML = `${markup}`;
-      this._appendTemplate(wrapperElement, element);
-      this.renderedElements[name] = element;
-    }
+    const {markup, name} = elementOptions;
+    const element = createElement(markup);
+    this._appendTemplate(wrapperElement, element);
+    this.renderedElements[name] = element;
   }
   _appendTemplate(container, element) {
     let elementBefore;

@@ -29,18 +29,13 @@ const rendererList = [
 
 rendererList.forEach((el) => el.render());
 
-Object.keys(cards.openingButtons).forEach((key) => {
-  cards.openingButtons[key].addEventListener(`click`, () => {
-    cards.openDetail(key);
-  });
-});
-Object.keys(cards.closingButtons).forEach((key) => {
-  cards.closingButtons[key].addEventListener(`click`, () => {
-    cards.closeDetail(key);
-  });
-});
-Object.keys(cards.savingForms).forEach((key) => {
-  cards.savingForms[key].addEventListener(`submit`, (e) => {
+window.addEventListener(`keydown`, (e) => {
+  if (e.key === `Escape`) {
     e.preventDefault();
-  });
+    cards.openedCards.forEach((card) => {
+      card.isOpen = false;
+    });
+  }
 });
+
+console.log(cards);
