@@ -6,6 +6,7 @@ import {EventController} from "../event-controller";
 
 const getTravelKey = (i) => `travel${i}`;
 const updateCardEvent = new Event(`update-card`);
+const changeCards = new Event(`change-cards`);
 
 class Card {
   constructor(travel, wrapper, element) {
@@ -109,7 +110,10 @@ export class Cards extends Renderer {
     this._travels = {};
     this._totalCostElement = document.querySelector(`.trip-info__cost-value`);
     this._eventController = null;
-    this._observer = new MutationObserver(() => this._update());
+    this._observer = new MutationObserver(() => {
+      this._update();
+      this.wrapper.dispatchEvent(changeCards);
+    });
   }
   get _travelsDataMap() {
     return this._travelsData.reduce((acc, travel, index) => {

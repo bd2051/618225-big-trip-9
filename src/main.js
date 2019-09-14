@@ -38,4 +38,10 @@ window.addEventListener(`keydown`, (e) => {
   }
 });
 
-console.log(cards);
+cards.wrapper.addEventListener(`change-cards`, () => {
+  if (Object.keys(cards.travels).length === 0) {
+    cardContainer.showNoCards();
+  } else {
+    cardContainer.hideNoCards();
+  }
+});

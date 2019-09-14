@@ -41,6 +41,10 @@ export default class Renderer {
     }
     container.insertBefore(element, elementBefore);
   }
+  addElement(name, element) {
+    this.wrapper.appendChild(element);
+    this.renderedElements[name] = element;
+  }
   removeElement(name) {
     this.renderedElements[name].remove();
     delete this.renderedElements[name];
