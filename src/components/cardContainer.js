@@ -1,4 +1,4 @@
-import Renderer from "../renderer";
+import Renderer from "./renderer";
 import {getCardContainer} from "./templates/card-container";
 import {getNoCards} from "./templates/no-cards";
 

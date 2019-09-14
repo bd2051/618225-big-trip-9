@@ -1,4 +1,4 @@
-import Renderer from "../renderer";
+import Renderer from "./renderer";
 import {getMenu} from "./templates/menu";
 
 export class Controls extends Renderer {

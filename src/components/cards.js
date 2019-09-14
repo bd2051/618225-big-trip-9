@@ -1,8 +1,8 @@
-import Renderer from "../renderer";
+import Renderer from "./renderer";
 import {getCard} from "./templates/card";
 import {getEditCard} from "./templates/edit-card";
-import {createElement} from "../utils";
-import {EventController} from "../event-controller";
+import {createElement} from "./utils/utils";
+import {EventController} from "./controllers/event-controller";
 
 const getTravelKey = (i) => `travel${i}`;
 const updateCardEvent = new Event(`update-card`);

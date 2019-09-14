@@ -1,4 +1,4 @@
-import {CITIES, TYPES_MAP} from "../../constants";
+import {CITIES, TYPES_MAP} from "../utils/constants";
 import moment from "moment";
 
 const TRANSFER = [
