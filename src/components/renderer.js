@@ -1,7 +1,10 @@
-import {createElement} from "./utils";
+import {createElement} from "./utils/utils";
 
 export default class Renderer {
   constructor({renderList, wrapper, options = {}}) {
+    if (new.target === Renderer) {
+      throw new Error(`Can't instantiate Renderer, only concrete one.`);
+    }
     this.renderedElements = {};
     this.wrapper = null;
     this.options = {

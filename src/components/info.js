@@ -1,4 +1,4 @@
-import Renderer from "../renderer";
+import Renderer from "./renderer";
 import {getInfo} from "./templates/info";
 
 export class Info extends Renderer {

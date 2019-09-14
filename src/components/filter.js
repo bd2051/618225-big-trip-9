@@ -1,4 +1,4 @@
-import Renderer from "../renderer";
+import Renderer from "./renderer";
 import {getFilter} from "./templates/filter";
 
 export class Filter extends Renderer {

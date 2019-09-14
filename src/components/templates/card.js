@@ -1,6 +1,6 @@
 import moment from "moment";
-import {TYPES_MAP} from "../../constants";
-import {setDataDiff} from "../../utils";
+import {TYPES_MAP} from "../utils/constants";
+import {setDataDiff} from "../utils/utils";
 
 export const getCard = ({
   type,

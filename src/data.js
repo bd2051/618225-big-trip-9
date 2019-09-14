@@ -1,4 +1,4 @@
-import {CITIES} from "./constants";
+import {CITIES} from "./components/utils/constants";
 
 export const getTravel = () => ({
   type: [
