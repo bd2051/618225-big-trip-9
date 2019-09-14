@@ -17,7 +17,7 @@ export class EventController {
   }
   remove() {
     this._events.forEach((el) => {
-      this._getElement(el.element).addEventListener(el.type, el.handler);
+      this._getElement(el.element).removeEventListener(el.type, el.handler);
     });
   }
   _getElement(element) {

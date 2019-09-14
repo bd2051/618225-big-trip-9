@@ -109,6 +109,7 @@ export class Cards extends Renderer {
     this._travels = {};
     this._totalCostElement = document.querySelector(`.trip-info__cost-value`);
     this._eventController = null;
+    this._observer = new MutationObserver(() => this._update());
   }
   get _travelsDataMap() {
     return this._travelsData.reduce((acc, travel, index) => {
@@ -120,27 +121,33 @@ export class Cards extends Renderer {
     return this._travels;
   }
   get openedCards() {
-    return Object.values(this._travels).filter((el) => el.isOpen);
+    return Object.values(this.travels).filter((el) => el.isOpen);
   }
   render() {
     super.render();
-    this._travels = this._computeTravels(this._travels);
-    this._totalCostElement.innerText = this.calculateTravelsCost();
+    this._observer.observe(this.wrapper, {childList: true});
+    this._update();
     this._eventController = new EventController([
       {
         element: this.wrapper,
         type: `update-card`,
-        handler: () => {
-          this._totalCostElement.innerText = this.calculateTravelsCost();
-        }
+        handler: () => this._update()
       }
     ]);
     this._eventController.add();
+  }
+  _update() {
+    this._travels = this._computeTravels(this._travels);
+    this._totalCostElement.innerText = this.calculateTravelsCost();
   }
   _computeTravels(travels) {
     const taskMap = this._travelsDataMap;
     return this._travelsData
       .reduce((acc, curr, index) => {
+        if (!this.renderedElements[getTravelKey(index)]) {
+          delete acc[getTravelKey(index)];
+          return acc;
+        }
         if (this.renderedElements[getTravelKey(index)] && !travels[getTravelKey(index)]) {
           acc[getTravelKey(index)] = new Card(taskMap[getTravelKey(index)], this.wrapper, this.renderedElements[getTravelKey(index)]);
         }
@@ -148,7 +155,7 @@ export class Cards extends Renderer {
       }, travels);
   }
   calculateTravelsCost() {
-    return Object.values(this._travels).reduce((acc, curr) => {
+    return Object.values(this.travels).reduce((acc, curr) => {
       acc += curr.price;
       acc += Array.from(curr.addition.keys()).reduce((additionAcc, additionCurr) => {
         additionAcc += additionCurr.price;
