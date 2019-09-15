@@ -58,7 +58,6 @@ export class TravelController {
         element: this._cardContainer.wrapper,
         type: `sort-cards`,
         handler: (e) => {
-          console.log(`sortcard`);
           this._cards.update(e.detail.sort(this._travels));
         }
       }

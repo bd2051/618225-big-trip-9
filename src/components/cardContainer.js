@@ -20,7 +20,6 @@ class Sort {
         element: this._element.querySelector(`.trip-sort__btn[data-sort="time"]`),
         type: `click`,
         handler: () => {
-          console.log(`time`);
           this._wrapper.dispatchEvent(getSortCardsEvent(Sort.timeSort));
         },
       },
