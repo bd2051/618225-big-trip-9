@@ -21,7 +21,7 @@ export class EventController {
     });
   }
   _getElement(element) {
-    if (element instanceof Node) {
+    if (element instanceof Node || element === window) {
       return element;
     } else if (element instanceof Function) {
       return element();
