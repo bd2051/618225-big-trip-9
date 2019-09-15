@@ -101,19 +101,9 @@ export class Cards extends Renderer {
   constructor(travelsData) {
     super({
       wrapper: `trip-events__list`,
-      renderList: travelsData.map((travel, index) => ({
-        name: getTravelKey(index),
-        markup: getCard(travel),
-      })),
+      renderList: Cards._getRenderList(travelsData)
     });
-    this._travelsData = travelsData;
-    this._travels = {};
-    this._totalCostElement = document.querySelector(`.trip-info__cost-value`);
-    this._eventController = null;
-    this._observer = new MutationObserver(() => {
-      this._update();
-      this.wrapper.dispatchEvent(changeCards);
-    });
+    this._init(travelsData);
   }
   get _travelsDataMap() {
     return this._travelsData.reduce((acc, travel, index) => {
@@ -130,21 +120,45 @@ export class Cards extends Renderer {
   render() {
     super.render();
     this._observer.observe(this.wrapper, {childList: true});
-    this._update();
+    this._updateTravels();
     this._eventController = new EventController([
       {
         element: this.wrapper,
         type: `update-card`,
-        handler: () => this._update()
+        handler: () => this._updateTravels()
       }
     ]);
     this._eventController.add();
   }
-  _update() {
+  update(travelsData) {
+    this._eventController.remove();
+    this._observer.disconnect();
+    this._init(travelsData);
+    this._renderList = Cards._getRenderList(travelsData);
+    super.update();
+  }
+  static _getRenderList(travelsData) {
+    return travelsData.map((travel, index) => ({
+      name: getTravelKey(index),
+      markup: getCard(travel),
+    }));
+  }
+  _init(travelsData) {
+    this._totalCostElement = document.querySelector(`.trip-info__cost-value`);
+    this._travelsData = travelsData;
+    this._travels = null;
+    this._eventController = null;
+    this._observer = new MutationObserver(() => {
+      this._updateTravels();
+      this.wrapper.dispatchEvent(changeCards);
+    });
+  }
+  _updateTravels() {
     this._travels = this._computeTravels(this._travels);
     this._totalCostElement.innerText = this.calculateTravelsCost();
   }
   _computeTravels(travels) {
+    const tempTravels = travels || {};
     const taskMap = this._travelsDataMap;
     return this._travelsData
       .reduce((acc, curr, index) => {
@@ -152,11 +166,11 @@ export class Cards extends Renderer {
           delete acc[getTravelKey(index)];
           return acc;
         }
-        if (this.renderedElements[getTravelKey(index)] && !travels[getTravelKey(index)]) {
+        if (this.renderedElements[getTravelKey(index)] && !tempTravels[getTravelKey(index)]) {
           acc[getTravelKey(index)] = new Card(taskMap[getTravelKey(index)], this.wrapper, this.renderedElements[getTravelKey(index)]);
         }
         return acc;
-      }, travels);
+      }, tempTravels);
   }
   calculateTravelsCost() {
     return Object.values(this.travels).reduce((acc, curr) => {

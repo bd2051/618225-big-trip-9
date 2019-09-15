@@ -8,6 +8,7 @@ import {EventController} from "./event-controller";
 
 export class TravelController {
   constructor({travels}) {
+    this._travels = travels;
     this._info = new Info({
       cities: travels.map((el) => el.city),
       dates: {
@@ -52,7 +53,15 @@ export class TravelController {
             this._cardContainer.hideNoCards();
           }
         }
+      },
+      {
+        element: this._cardContainer.wrapper,
+        type: `sort-cards`,
+        handler: (e) => {
+          this._cards.update(e.detail.sort(this._travels));
+        }
       }
     ]);
+    this._eventController.add();
   }
 }

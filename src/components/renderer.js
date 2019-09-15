@@ -17,6 +17,12 @@ export default class Renderer {
   render() {
     this._createElements({list: this._renderList, wrapperElement: this._getWrapper()});
   }
+  update() {
+    Object.keys(this.renderedElements).forEach((key) => {
+      this.removeElement(key);
+    });
+    this.render();
+  }
   _getWrapper() {
     this.wrapper = document.querySelector(`.${this._wrapper}`);
     return this.wrapper;
