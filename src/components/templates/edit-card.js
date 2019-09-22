@@ -24,7 +24,8 @@ export const getEditCard = ({
   price,
   addition,
   photos,
-  description
+  description,
+  isFavorite
 }) =>
   `<li class="trip-events__item">
     <form class="event  event--edit" action="#" method="post">
@@ -42,7 +43,7 @@ export const getEditCard = ({
 
               ${TRANSFER.map((key) => `<div class="event__type-item">
                 <input
-                  id="event-type-taxi-1"
+                  id="event-type-${key}-1"
                   class="event__type-input  visually-hidden"
                   type="radio" name="event-type"
                   value="${key}"
@@ -57,7 +58,7 @@ export const getEditCard = ({
               
               ${ACTIVITY.map((key) => `<div class="event__type-item">
                 <input
-                  id="event-type-taxi-1"
+                  id="event-type-${key}-1"
                   class="event__type-input  visually-hidden"
                   type="radio"
                   name="event-type"
@@ -123,7 +124,7 @@ export const getEditCard = ({
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
 
-        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavorite ? `checked` : ``}>
         <label class="event__favorite-btn" for="event-favorite-1">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -143,19 +144,20 @@ export const getEditCard = ({
 
           <div class="event__available-offers">
           
-            ${Array.from(addition.keys()).map((el) => `
+            ${Object.keys(addition).map((key) => `
               <div class="event__offer-selector">
                 <input
                   class="event__offer-checkbox  visually-hidden"
-                  id="event-offer-luggage-1"
+                  id="event-offer-${key}-1"
                   type="checkbox"
-                  name="event-offer-luggage"
-                  ${addition.get(el) ? `checked` : ``}
+                  name="event-offer"
+                  value="${key}"
+                  ${addition[key].isSelect ? `checked` : ``}
                 >
-                <label class="event__offer-label" for="event-offer-luggage-1">
-                  <span class="event__offer-title">${el.name}</span>
+                <label class="event__offer-label" for="event-offer-${key}-1">
+                  <span class="event__offer-title">${addition[key].name}</span>
                   &plus;
-                  &euro;&nbsp;<span class="event__offer-price">${el.price}</span>
+                  &euro;&nbsp;<span class="event__offer-price">${addition[key].price}</span>
                 </label>
               </div>`).join(``)}
             

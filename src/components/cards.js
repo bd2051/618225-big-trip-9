@@ -3,6 +3,7 @@ import {getCard} from "./templates/card";
 import {getEditCard} from "./templates/edit-card";
 import {createElement} from "./utils/utils";
 import {EventController} from "./controllers/event-controller";
+import moment from "moment";
 
 const getTravelKey = (i) => `travel${i}`;
 const updateCardEvent = new Event(`update-card`);
@@ -50,6 +51,31 @@ class Card {
         type: `submit`,
         handler: (e) => {
           e.preventDefault();
+          const formData = new FormData(this.editingForm.querySelector(`form`));
+          const addition = formData.getAll(`event-offer`);
+          const travelData = {
+            type: formData.getAll(`event-type`)[0],
+            city: formData.get(`event-destination`),
+            datetime: {
+              start: moment(formData.get(`event-start-time`), `DD/MM/YY HH:mm`).valueOf(),
+              end: moment(formData.get(`event-end-time`), `DD/MM/YY HH:mm`).valueOf(),
+            },
+            price: formData.get(`event-price`),
+            addition: Object.keys(this.addition).reduce((acc, key) => {
+              acc[key] = this.addition[key];
+              acc[key].isSelect = addition.includes(key);
+              return acc;
+            }, {}),
+            isFavorite: Boolean(formData.get(`event-favorite`)),
+          };
+          const exceptions = [
+            `description`,
+            `photos`,
+          ];
+          if (Object.keys(this._travel).some((key) => travelData[key] === undefined && !exceptions.includes(key))) {
+            throw new Error(`Form don't submit key ${Object.keys(this._travel).filter((key) => travelData[key] === undefined && !exceptions.includes(key)).join(`, `)}`);
+          }
+          this.isOpen = false;
         }
       },
     ]);
@@ -174,9 +200,9 @@ export class Cards extends Renderer {
   }
   calculateTravelsCost() {
     return Object.values(this.travels).reduce((acc, curr) => {
-      acc += curr.price;
-      acc += Array.from(curr.addition.keys()).reduce((additionAcc, additionCurr) => {
-        additionAcc += additionCurr.price;
+      acc += parseInt(curr.price, 10);
+      acc += Object.values(curr.addition).reduce((additionAcc, additionCurr) => {
+        additionAcc += parseInt(additionCurr.price, 10);
         return additionAcc;
       }, 0);
       return acc;
