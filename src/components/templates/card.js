@@ -33,10 +33,10 @@ export const getCard = ({
 
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${Array.from(addition.keys()).filter((el) => addition.get(el)).map((el) => `<li class="event__offer">
+        ${Object.keys(addition).filter((key) => addition[key].isSelect).map((key) => `<li class="event__offer">
           <span class="event__offer-title">
-            ${el.name}
-          </span>&plus;&nbsp;&euro;&nbsp;<span class="event__offer-price">${el.price}</span>
+            ${addition[key].name}
+          </span>&plus;&nbsp;&euro;&nbsp;<span class="event__offer-price">${addition[key].price}</span>
         </li>`).join(``)}
       </ul>
 

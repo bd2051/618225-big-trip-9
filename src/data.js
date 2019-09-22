@@ -27,28 +27,39 @@ export const getTravel = () => ({
     end: Date.now() + 1 + Math.floor(Math.random() * 7 * 24 * 60 * 60) * 1000,
   },
   price: Math.round(Math.random() * 1000),
-  addition: new Map([
-    [{
+  addition: {
+    luggage: {
+      id: `luggage`,
       name: `Add luggage`,
       price: 10,
-    }, Boolean(Math.round(Math.random()))],
-    [{
+      isSelect: Boolean(Math.round(Math.random()))
+    },
+    comfort: {
+      id: `comfort`,
       name: `Switch to comfort class`,
       price: 150,
-    }, Boolean(Math.round(Math.random()))],
-    [{
+      isSelect: Boolean(Math.round(Math.random()))
+    },
+    meal: {
+      id: `meal`,
       name: `Add meal`,
       price: 2,
-    }, Boolean(Math.round(Math.random()))],
-    [{
+      isSelect: Boolean(Math.round(Math.random()))
+    },
+    seats: {
+      id: `seats`,
       name: `Choose seats`,
       price: 9,
-    }, Boolean(Math.round(Math.random()))],
-    [{
+      isSelect: Boolean(Math.round(Math.random()))
+    },
+    train: {
+      id: `train`,
       name: `Travel by train`,
       price: 40,
-    }, Boolean(Math.round(Math.random()))],
-  ])
+      isSelect: Boolean(Math.round(Math.random()))
+    },
+  },
+  isFavorite: Boolean(Math.round(Math.random())),
 });
 
 export const getMenuData = () => new Map([
