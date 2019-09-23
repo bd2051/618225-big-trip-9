@@ -5,6 +5,8 @@ import {createElement} from "./utils/utils";
 import {EventController} from "./controllers/event-controller";
 import moment from "moment";
 
+import flatpickr from "flatpickr";
+
 const getTravelKey = (i) => `travel${i}`;
 const updateCardEvent = new Event(`update-card`);
 const changeCards = new Event(`change-cards`);
@@ -15,6 +17,7 @@ class Card {
     this._wrapper = wrapper;
     this.element = element;
     this.editingForm = createElement(getEditCard(travel));
+    this._setFlatpickr();
     this._isOpen = false;
     Object.keys(travel).forEach((key) => {
       Object.defineProperty(this, key, {
@@ -26,6 +29,7 @@ class Card {
           this._eventController.remove();
           this._replaceElement();
           this._replaceEditForm();
+          this._setFlatpickr();
           this._eventController.add();
           this._wrapper.dispatchEvent(updateCardEvent);
         }
@@ -75,6 +79,9 @@ class Card {
           if (Object.keys(this._travel).some((key) => travelData[key] === undefined && !exceptions.includes(key))) {
             throw new Error(`Form don't submit key ${Object.keys(this._travel).filter((key) => travelData[key] === undefined && !exceptions.includes(key)).join(`, `)}`);
           }
+          Object.keys(travelData).forEach((key) => {
+            this[key] = travelData[key];
+          });
           this.isOpen = false;
         }
       },
@@ -120,6 +127,20 @@ class Card {
       this._wrapper.replaceChild(newEditingForm, this.editingForm);
     }
     this.editingForm = newEditingForm;
+  }
+  _setFlatpickr() {
+    const startInput = this.editingForm.querySelector(`#event-start-time-1`);
+    const endInput = this.editingForm.querySelector(`#event-end-time-1`);
+    flatpickr(startInput, {
+      dateFormat: `d/m/y H:i`,
+      enableTime: true,
+      closeOnSelect: true,
+    });
+    flatpickr(endInput, {
+      dateFormat: `d/m/y H:i`,
+      enableTime: true,
+      closeOnSelect: true,
+    });
   }
 }
 

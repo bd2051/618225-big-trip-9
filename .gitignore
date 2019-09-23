@@ -16,3 +16,4 @@ build/
 
 # сборка
 public/bundle.js*
+public/css/bundle.css*
