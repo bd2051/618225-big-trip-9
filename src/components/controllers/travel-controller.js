@@ -5,6 +5,7 @@ import {CardContainer} from "../cardContainer";
 import {Cards} from "../cards";
 import {Info} from "../info";
 import {EventController} from "./event-controller";
+import {Stats} from '../stats';
 
 export class TravelController {
   constructor({travels}) {
@@ -18,6 +19,7 @@ export class TravelController {
     });
     this._controls = new Controls(getMenuData());
     this._filter = new Filter(getFilterData());
+    this._stats = new Stats({});
     this._cardContainer = new CardContainer(travels[0].datetime.start);
     this._cards = new Cards(travels);
     this._eventController = null;
@@ -27,6 +29,7 @@ export class TravelController {
       this._info,
       this._controls,
       this._filter,
+      this._stats,
       this._cardContainer,
       this._cards,
     ].forEach((el) => el.render());
@@ -59,6 +62,20 @@ export class TravelController {
         type: `sort-cards`,
         handler: (e) => {
           this._cards.update(e.detail.sort(this._travels));
+        }
+      },
+      {
+        element: this._controls.wrapper,
+        type: `change-tab`,
+        handler: (e) => {
+          const tab = e.detail.tab;
+          if (tab === `stats`) {
+            this._stats.show();
+            this._cardContainer.hide();
+          } else if (tab === `timeline`) {
+            this._stats.hide();
+            this._cardContainer.show();
+          }
         }
       }
     ]);
