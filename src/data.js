@@ -1,6 +1,9 @@
 import {CITIES} from "./components/utils/constants";
 
+let index = 0;
+
 export const getTravel = () => ({
+  id: `travel${index++}`,
   type: [
     `bus`,
     `check-in`,

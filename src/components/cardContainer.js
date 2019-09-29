@@ -86,4 +86,10 @@ export class CardContainer extends Renderer {
       this.renderedElements[`cardContainer`].classList.remove(`visually-hidden`);
     }
   }
+  hide() {
+    this.wrapper.classList.add(`visually-hidden`);
+  }
+  show() {
+    this.wrapper.classList.remove(`visually-hidden`);
+  }
 }
