@@ -1,5 +1,5 @@
 import {Controls} from "../controls";
-import {getFilterData, getMenuData} from "../../data";
+import {getFilterData, getMenuData, getTravel} from "../../data";
 import {Filter} from "../filter";
 import {CardContainer} from "../cardContainer";
 import {Cards} from "../cards";
@@ -50,6 +50,7 @@ export class TravelController {
         element: this._cards.wrapper,
         type: `change-cards`,
         handler: () => {
+          this.updateTravels();
           if (Object.keys(this._cards.travels).length === 0) {
             this._cardContainer.showNoCards();
           } else {
@@ -80,5 +81,13 @@ export class TravelController {
       }
     ]);
     this._eventController.add();
+  }
+  updateTravels() {
+    this._travels = Object.values(this._cards.travels).map((el) => {
+      return Object.keys(getTravel()).reduce((acc, key) => {
+        acc[key] = el[key];
+        return acc;
+      }, {});
+    });
   }
 }

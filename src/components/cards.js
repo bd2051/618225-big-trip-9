@@ -7,9 +7,9 @@ import moment from "moment";
 
 import flatpickr from "flatpickr";
 
-const getTravelKey = (i) => `travel${i}`;
 const updateCardEvent = new Event(`update-card`);
-const changeCards = new Event(`change-cards`);
+const changeCardsEvent = new Event(`change-cards`);
+const getDeleteCardEvent = (travelKey) => new CustomEvent(`delete-card`, {detail: {travelKey}});
 
 class Card {
   constructor(travel, wrapper, element) {
@@ -85,6 +85,14 @@ class Card {
           this.isOpen = false;
         }
       },
+      {
+        element: () => this.deleteButton,
+        type: `click`,
+        handler: () => {
+          this.isOpen = false;
+          this._wrapper.dispatchEvent(getDeleteCardEvent(this.id));
+        },
+      }
     ]);
     this._eventController.add();
   }
@@ -96,6 +104,9 @@ class Card {
   }
   get savingForm() {
     return this.editingForm.querySelector(`form.event.event--edit`);
+  }
+  get deleteButton() {
+    return this.editingForm.querySelector(`.event__reset-btn`);
   }
   get isOpen() {
     return this._isOpen;
@@ -153,8 +164,8 @@ export class Cards extends Renderer {
     this._init(travelsData);
   }
   get _travelsDataMap() {
-    return this._travelsData.reduce((acc, travel, index) => {
-      acc[getTravelKey(index)] = travel;
+    return this._travelsData.reduce((acc, travel) => {
+      acc[travel.id] = travel;
       return acc;
     }, {});
   }
@@ -173,6 +184,13 @@ export class Cards extends Renderer {
         element: this.wrapper,
         type: `update-card`,
         handler: () => this._updateTravels()
+      },
+      {
+        element: this.wrapper,
+        type: `delete-card`,
+        handler: (e) => {
+          this.removeElement(e.detail.travelKey);
+        }
       }
     ]);
     this._eventController.add();
@@ -185,8 +203,8 @@ export class Cards extends Renderer {
     super.update();
   }
   static _getRenderList(travelsData) {
-    return travelsData.map((travel, index) => ({
-      name: getTravelKey(index),
+    return travelsData.map((travel) => ({
+      name: travel.id,
       markup: getCard(travel),
     }));
   }
@@ -197,7 +215,7 @@ export class Cards extends Renderer {
     this._eventController = null;
     this._observer = new MutationObserver(() => {
       this._updateTravels();
-      this.wrapper.dispatchEvent(changeCards);
+      this.wrapper.dispatchEvent(changeCardsEvent);
     });
   }
   _updateTravels() {
@@ -208,13 +226,13 @@ export class Cards extends Renderer {
     const tempTravels = travels || {};
     const taskMap = this._travelsDataMap;
     return this._travelsData
-      .reduce((acc, curr, index) => {
-        if (!this.renderedElements[getTravelKey(index)]) {
-          delete acc[getTravelKey(index)];
+      .reduce((acc, curr) => {
+        if (!this.renderedElements[curr.id]) {
+          delete acc[curr.id];
           return acc;
         }
-        if (this.renderedElements[getTravelKey(index)] && !tempTravels[getTravelKey(index)]) {
-          acc[getTravelKey(index)] = new Card(taskMap[getTravelKey(index)], this.wrapper, this.renderedElements[getTravelKey(index)]);
+        if (this.renderedElements[curr.id] && !tempTravels[curr.id]) {
+          acc[curr.id] = new Card(taskMap[curr.id], this.wrapper, this.renderedElements[curr.id]);
         }
         return acc;
       }, tempTravels);
