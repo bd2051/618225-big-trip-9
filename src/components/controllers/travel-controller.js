@@ -13,14 +13,14 @@ export class TravelController {
     this._info = new Info({
       cities: travels.map((el) => el.city),
       dates: {
-        start: travels[0].datetime.start,
-        end: travels[travels.length - 1].datetime.end,
+        start: travels[0] ? travels[0].datetime.start : null,
+        end: travels[travels.length - 1] ? travels[travels.length - 1].datetime.end : null,
       }
     });
     this._controls = new Controls(getMenuData());
     this._filter = new Filter(getFilterData());
     this._stats = new Stats({});
-    this._cardContainer = new CardContainer(travels[0].datetime.start);
+    this._cardContainer = new CardContainer(travels[0] ? travels[0].datetime.start : null);
     this._cards = new Cards(travels);
     this._eventController = null;
   }
@@ -78,7 +78,14 @@ export class TravelController {
             this._cardContainer.show();
           }
         }
-      }
+      },
+      {
+        element: document.querySelector(`.trip-main__event-add-btn`),
+        type: `click`,
+        handler: () => {
+          this._cards.addElement(getTravel());
+        }
+      },
     ]);
     this._eventController.add();
   }

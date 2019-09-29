@@ -202,6 +202,11 @@ export class Cards extends Renderer {
     this._renderList = Cards._getRenderList(travelsData);
     super.update();
   }
+  addElement(travelData) {
+    const [travel] = Cards._getRenderList([travelData]);
+    super.addElement(travel.name, createElement(travel.markup));
+    this._travels[travel.name] = new Card(travelData, this.wrapper, this.renderedElements[travel.name]);
+  }
   static _getRenderList(travelsData) {
     return travelsData.map((travel) => ({
       name: travel.id,
@@ -224,7 +229,7 @@ export class Cards extends Renderer {
   }
   _computeTravels(travels) {
     const tempTravels = travels || {};
-    const taskMap = this._travelsDataMap;
+    const travelMap = this._travelsDataMap;
     return this._travelsData
       .reduce((acc, curr) => {
         if (!this.renderedElements[curr.id]) {
@@ -232,7 +237,7 @@ export class Cards extends Renderer {
           return acc;
         }
         if (this.renderedElements[curr.id] && !tempTravels[curr.id]) {
-          acc[curr.id] = new Card(taskMap[curr.id], this.wrapper, this.renderedElements[curr.id]);
+          acc[curr.id] = new Card(travelMap[curr.id], this.wrapper, this.renderedElements[curr.id]);
         }
         return acc;
       }, tempTravels);
